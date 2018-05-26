@@ -36,5 +36,3 @@ services:
         - MYSQL_USER=test
         - MYSQL_PASSWORD=StENCngfMk5dQU6x
     container_name: test-marfeel_mysql
-
-
