@@ -30,6 +30,8 @@ class CrawlerController extends Controller
      */
     public function browseAction(Request $request, CrawlerService $crawlerService)
     {
+        $urls = [];
+
         if ($content = $request->getContent()) {
             $urls = json_decode($content, true);
         }
