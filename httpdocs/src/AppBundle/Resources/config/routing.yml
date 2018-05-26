@@ -1,0 +1,4 @@
+crawler:
+    resource: "@AppBundle/Controller/API/CrawlerController.php"
+    prefix: /api/
+    type:   annotation
