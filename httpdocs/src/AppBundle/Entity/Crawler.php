@@ -9,11 +9,17 @@ use \Gedmo\Timestampable\Traits\TimestampableEntity;
  * Crawler
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\CrawlerRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CrawlerRepository")
  */
 class Crawler
 {
     use TimestampableEntity;
+
+    public function __construct($url, $statusCode)
+    {
+        $this->url        = $url;
+        $this->statusCode = $statusCode;
+    }
 
     /**
      * @var int
@@ -30,6 +36,13 @@ class Crawler
      * @ORM\Column(type="string", length=255)
      */
     private $url;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    private $statusCode;
 
     /**
      * @var boolean
@@ -74,6 +87,26 @@ class Crawler
     public function setUrl($url)
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatusCode()
+    {
+        return $this->statusCode;
+    }
+
+    /**
+     * @param string $statusCode
+     *
+     * @return Crawler
+     */
+    public function setStatusCode($statusCode)
+    {
+        $this->statusCode = $statusCode;
 
         return $this;
     }
