@@ -25,7 +25,7 @@ class CrawlerController extends Controller
     /**
      * Browse through given URLS
      *
-     * @Route("/v1/browse", name="track_index")
+     * @Route("/v1/browse", name="crawler_browse")
      * @Method("POST")
      */
     public function browseAction(Request $request, CrawlerService $crawlerService)
