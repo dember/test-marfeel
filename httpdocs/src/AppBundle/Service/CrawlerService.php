@@ -24,8 +24,6 @@ class CrawlerService
 
     public function browseUrlsAndProcess($urls, $customOptions = null)
     {
-        ini_set('max_execution_time', 300);
-
         $urlsProcessed = [];
 
         $batchSize = (count($urls) < self::URLS_BATCH_SIZE) ? count($urls) : self::URLS_BATCH_SIZE;
@@ -42,7 +40,7 @@ class CrawlerService
 
         $options = $customOptions ? array_merge($options, $customOptions) : $options;
 
-        for ($i = 0; $i < $batchSize; $i++) {
+        for ($i = 0; $i < $batchSize;) {
             $this->addNewCurl($urls, $i, $options, $master);
         }
 
@@ -74,14 +72,14 @@ class CrawlerService
     {
         $crawler = new MyCrawler($info['url'], $info['http_code']);
 
-        if ($info['http_code'] == Response::HTTP_OK)  {
+        if (in_array($info['http_code'], [Response::HTTP_OK, Response::HTTP_MOVED_PERMANENTLY]))  {
             $html = curl_multi_getcontent($done['handle']);
 
             $crawler->setMarfeelizable(
                 $this->isMarfeelizable($html)
             );
         } else {
-            $crawler->setMarfeelizable(false);
+            $crawler->setMarfeelizable(0);
         }
 
         $this->entityManager->persist($crawler);
@@ -124,7 +122,7 @@ class CrawlerService
     private function addNewCurl(&$urls, &$i, &$options, &$master)
     {
         $ch                   = curl_init();
-        $options[CURLOPT_URL] = $urls[$i][self::URL_ACCESS_KEY];
+        $options[CURLOPT_URL] = $urls[$i++][self::URL_ACCESS_KEY];
         curl_setopt_array($ch, $options);
         curl_multi_add_handle($master, $ch);
     }
